@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from os.path import abspath, basename, dirname, join, normpath
+from sys import path 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -36,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south'
+    'south', 'projections'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -49,6 +51,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'cru.urls'
+ROOT_PATH = join(dirname(__file__), '..')
 
 WSGI_APPLICATION = 'cru.wsgi.application'
 
