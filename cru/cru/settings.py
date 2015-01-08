@@ -25,6 +25,7 @@ SECRET_KEY = '=3avs4%8@@(4j@4ncyul$zw)lj8=2&slxwsj2glgl(b4mji6*9'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+TEMPLATE_DIRS = BASE_DIR + '/cru/templates/'
 
 ALLOWED_HOSTS = []
 
@@ -83,4 +84,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/cru/static/'
+
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    # '/home/wise/Development/excelladash/static',
+    abspath(join(ROOT_PATH, 'cru/static')),
+)
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)

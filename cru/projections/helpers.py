@@ -1,11 +1,12 @@
 from .models import Forecast
 from xlrd import open_workbook, xldate_as_tuple
 from django.conf import settings
+from django.contrib.humanize.templatetags.humanize import intcomma
 import csv, requests, urllib2, datetime
 
 def import_forecast():
+
 	wb = open_workbook(settings.ROOT_PATH + '/2015 Excella Consolidated ARF Q1.xlsx')
-	print 'hello'
 	sheet = wb.sheets()[1]
 	date_index = sheet.row_values(0).index('Month')
 	workdays_index = sheet.row_values(0).index('Work Days')
@@ -29,6 +30,9 @@ def import_forecast():
 	forecasted_total_hours_index = sheet.row_values(0).index('Forecasted Total Hours')
 	forecasted_total_revenue_index = sheet.row_values(0).index('Forecasted Total Revenue')
 	risk_adjusted_total_revenue_index = sheet.row_values(0).index('Risk Adjusted Total Revenue')
+
+	Forecast.objects.all().delete()
+
 	for rownum in range(1, sheet.nrows):
 		row = sheet.row(rownum)
 		if row[0].value == '':
@@ -38,8 +42,8 @@ def import_forecast():
 		date_tuple = xldate_as_tuple(date, wb.datemode)
 		correct_date_object = datetime.date(date_tuple[0], date_tuple[1], date_tuple[2])
 		forecast.forecast_date = correct_date_object
-		forecast.year = 2015
-		forecast.month = 12
+		forecast.year = forecast.forecast_date.year
+		forecast.month = forecast.forecast_date.month
 		forecast.quarter = 'Q1'
 		forecast.workdays = row[workdays_index].value
 		forecast.person = row[person_index].value
@@ -56,10 +60,18 @@ def import_forecast():
 		forecast.contract_type = row[contract_type_index].value
 		forecast.role_type = row[type_index].value
 		forecast.percent = row[percent_index].value
-		forecast.rate = row[rate_index].value
+		if row[rate_index].value == '':
+			forecast.rate = 0
+		else:
+			forecast.rate = row[rate_index].value
 		forecast.status = row[status_index].value
 		forecast.probability = row[probability_index].value
 		forecast.forecasted_total_hours = row[forecasted_total_hours_index].value
 		forecast.forecasted_total_revenue = row[forecasted_total_revenue_index].value
 		forecast.risk_adjusted_total_revenue = row[risk_adjusted_total_revenue_index].value
+		print forecast
 		forecast.save()
+
+def currency(dollars):
+    dollars = round(float(dollars), 2)
+    return "$%s%s" % (intcomma(int(dollars)), ("%0.2f" % dollars)[-3:])

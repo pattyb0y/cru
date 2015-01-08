@@ -71,3 +71,11 @@ class Forecast(models.Model):
 	forecasted_total_hours = models.DecimalField(max_digits=4, decimal_places=0)
 	forecasted_total_revenue = models.DecimalField(max_digits=8, decimal_places=2)
 	risk_adjusted_total_revenue = models.DecimalField(max_digits=8, decimal_places=2)
+	def __unicode__(self):
+		fc = str(self.year) + ' ' + str(self.month) + ' ' + str(self.quarter) + ' ' + str(self.workdays) + ' ' + str(self.person)
+		fc += ' ' + str(self.labor_category) + ' ' + str(self.project_name) + ' ' + str(self.client_name) + ' '
+		fc += str(self.industry_name) + ' ' + str(self.sector_name) + ' ' + str(self.service_area_name) +  ' '
+		fc += str(self.business_unit_name) + ' ' + str(self.prime_sub) + ' ' + str(self.contract_type) + ' ' 
+		fc += str(self.role_type) + ' ' + str(self.percent) + ' ' + str(self.status) + ' ' + str(self.probability)
+		fc += ' ' + str(self.forecasted_total_hours) + ' ' + str(self.forecasted_total_revenue) + ' ' + str(self.risk_adjusted_total_revenue)
+		return fc
