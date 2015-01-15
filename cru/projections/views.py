@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from projections.helpers import import_forecast, currency
-from projections.models import Forecast
+from projections.models import Forecast, ResourceProb
 from django.db.models import Sum, Count
 
 # Create your views here.
@@ -61,11 +61,21 @@ def index(request):
 	#	print str(i['project_name']) + ' ' + str(currency(i['risk_adjusted_total_revenue__sum'])) + ' ' + str(currency(i['forecasted_total_revenue__sum']))
 
 	# get resource TBD counts
-	fc = Forecast.objects.filter(person__contains='TBD').values('labor_category', 'year', 'month').annotate(Sum('percent'))
+	fc = Forecast.objects.filter(person__contains='TBD').values('labor_category', 'year', 'month', 'percent', 'probability')
+	#fc = Forecast.objects.filter(person__contains='TBD').extra(select={'cnt': 'select percent*probability/10000 from projections_forecast'}).values('labor_category', 'year', 'month', 'cnt')
+	#fc = fc.values('labor_category', 'year', 'month').annotate(Sum('cnt'))
 	print 'TBD Resource counts'
+	ret = ResourceProb.objects.all().delete()
 	for i in fc:
-		print str(i['year']) + '%' + str(i['month']) + '%' + i['labor_category'] + '%' + str(i['percent__sum']/100)
-
+		res = ResourceProb()
+		res.year = i['year']
+		res.month = i['month']
+		res.labor_category = i['labor_category']
+		res.cnt = i['percent'] / 100 * i['probability'] / 100
+		res.save()
+	fc = ResourceProb.objects.values('labor_category', 'year', 'month').annotate(Sum('cnt'))
+	for i in fc:
+		print str(i['year']) + ' ' + str(i['month']) + ' ' + i['labor_category'] + ' ' + str(i['cnt__sum'])
 	# get resource counts
 	#fc = Forecast.objects.values('labor_category', 'year', 'month').annotate(Count('labor_category'))
 	#print 'All Resource Counts'

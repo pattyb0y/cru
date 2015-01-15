@@ -32,10 +32,10 @@
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">Link</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projections <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Forecasted Total Revenue</a></li>
+                    <li><a href="#">Risk Adjusted Forecasted Revenue</a></li>
                     <li><a href="#">Something else here</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Separated link</a></li>
@@ -68,14 +68,18 @@
         </nav>
         {% endblock %}
     </div>
-
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{STATIC_URL}}js/highcharts.js"></script>
+    <script src="{{STATIC_URL}}js/exporting.js"></script>
+    <script src="{{STATIC_URL}}js/drilldown.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+
+    <div id="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
 
 </body>
 </html>

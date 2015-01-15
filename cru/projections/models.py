@@ -79,3 +79,9 @@ class Forecast(models.Model):
 		fc += str(self.role_type) + ' ' + str(self.percent) + ' ' + str(self.status) + ' ' + str(self.probability)
 		fc += ' ' + str(self.forecasted_total_hours) + ' ' + str(self.forecasted_total_revenue) + ' ' + str(self.risk_adjusted_total_revenue)
 		return fc
+
+class ResourceProb(models.Model):
+	year = models.DecimalField(max_digits=4, decimal_places=0)
+	month = models.PositiveIntegerField()
+	labor_category = models.CharField(max_length=100)
+	cnt = models.DecimalField(max_digits=4, decimal_places=2)

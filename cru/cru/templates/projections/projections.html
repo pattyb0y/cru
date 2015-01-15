@@ -1,15 +1,11 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script src="http://code.highcharts.com/modules/drilldown.js"></script>
+{% extends "base.html" %}
 
-
-{% extends 'base.html' %}
 {% block title %}
 Excella Forecasts
 {% endblock %}
 
 {% block content %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
 <table><tr>
 <td><div id="risk_adj_rev"></div></td>
@@ -20,8 +16,6 @@ Excella Forecasts
 	Risk Adjusted Total Revenue: {{risk_adj_rev}}</p>
 	Forecasted Total Hours: {{total_hrs}}</p>
 	Forecasted Average Rate: {{fc_avg_rate}}</p>
-
-
 <script>
 $(function () {
     $('#risk_adj_rev').highcharts({
